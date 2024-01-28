@@ -10,7 +10,7 @@ body {
 }
 canvas {
   outline: #c23f5a solid 5px;
-  background-color: #9afca8;
+  background-color: #fff;
 }
 div {
   display: flex;

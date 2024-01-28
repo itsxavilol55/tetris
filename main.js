@@ -23,7 +23,7 @@ function caePieza() {
         setTimeout(() => {
             borraPieza();
             resolve();
-        }, 250);
+        }, 200);
     });
     promesa.then(() => caePieza());
 }
@@ -37,12 +37,17 @@ function borraPieza() {
     ctx.closePath();
 }
 function compara() {
+    const pixeles = ctx.getImageData(posX * size, (posY + 1) * size, size, size);
+    const arrayAux = Array.from(pixeles.data);
+    for (let i = 0; i < arrayAux.length; i++) {
+        if (arrayAux[i] != 0) {
+            juego();
+            return true;
+        }
+    }
     if (posY * size >= canvas.height - size) {
         juego();
         return true;
     }
     return false;
 }
-
-
-
