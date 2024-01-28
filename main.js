@@ -1,4 +1,5 @@
 import './style.css'
+const colores = ["#abcdef", "#7ab81a", "#fae3c7", "#1afe4a", "#a4bfea", "#987654", "#fede3a", "#e045ae", "#f02e4a"];
 const size = 20;
 const columnas = 21;
 const filas = 30;
@@ -12,6 +13,8 @@ canvas.style.width = totalWidth + "px";
 canvas.style.height = totalHeight + "px";
 juego();
 function juego() {
+    const color = Math.round(Math.random() * (colores.length - 1));
+    ctx.fillStyle = colores[color];
     posY = 0;
     caePieza();
 }
@@ -23,7 +26,7 @@ function caePieza() {
         setTimeout(() => {
             borraPieza();
             resolve();
-        }, 200);
+        }, 10);
     });
     promesa.then(() => caePieza());
 }
