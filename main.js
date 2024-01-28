@@ -1,5 +1,5 @@
 import './style.css'
-const colores = ["#abcdef", "#7ab81a", "#fae3c7", "#1afe4a", "#a4bfea", "#987654", "#fede3a", "#e045ae", "#f02e4a"];
+let colores = [];
 const size = 20;
 const filas = 30;
 const columnas = 18;
@@ -12,6 +12,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.style.width = totalWidth + "px";
 canvas.style.height = totalHeight + "px";
+generaColores();
 juego();
 mueve();
 function juego() {
@@ -67,7 +68,7 @@ function borraPieza() {
     ctx.closePath();
 }
 function mueve() {
-    document.addEventListener("keydown", function (event) {
+    document.addEventListener("keyup", function (event) {
         const tecla = event.key;
         if (tecla == "ArrowLeft" && posX2 * size > 0 && !comparaLados(-1)) {
             posX2--;
@@ -87,4 +88,12 @@ function comparaLados(x) {
             return true;
     }
     return false;
+}
+function generaColores() {
+    for (let index = 0; index < 30; index++) {
+        let red = Math.round(Math.random() * 254) + 1;
+        let green = Math.round(Math.random() * 254) + 1;
+        let blue = Math.round(Math.random() * 254) + 1;
+        colores.push("rgb(" + red + "," + green + "," + blue + ")");
+    }
 }
