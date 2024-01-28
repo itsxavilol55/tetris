@@ -24,13 +24,13 @@ function juego() {
 }
 function caePieza() {
     dibuja();
-    if (compara())
+    if (comparaAbajo())
         return;
     const promesa = new Promise((resolve) => {
         setTimeout(() => {
             borraPieza();
             resolve();
-        }, 150);
+        }, 140);
     });
     promesa.then(() => caePieza());
 }
@@ -44,7 +44,7 @@ function borraPieza() {
     posX = posX2;
     ctx.closePath();
 }
-function compara() {
+function comparaAbajo() {
     const pixeles = ctx.getImageData(posX * size, (posY + 1) * size, size * 2, size);
     const arrayAux = Array.from(pixeles.data);
     for (let i = 0; i < arrayAux.length; i++) {
@@ -62,13 +62,22 @@ function compara() {
 function mueve() {
     document.addEventListener("keydown", function (event) {
         const tecla = event.key;
-        if (tecla == "ArrowLeft") {
+        if (tecla == "ArrowLeft" && posX2 * size > 0 && !comparaLados(-1)) {
             posX2--;
             return;
         }
-        if (tecla == "ArrowRight") {
+        if (tecla == "ArrowRight" && posX2 * size < canvas.width - size * 2 && !comparaLados(1)) {
             posX2++;
             return;
         }
     });
+}
+function comparaLados(x) {
+    const pixeles = ctx.getImageData((posX2 + x) * size, (posY + 1) * size, size * 2, size);
+    const arrayAux = Array.from(pixeles.data);
+    for (let i = 0; i < arrayAux.length; i++) {
+        if (arrayAux[i] != 0)
+            return true;
+    }
+    return false;
 }
