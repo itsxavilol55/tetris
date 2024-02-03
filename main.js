@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css';
 let colores = [];
 const size = 20;
 const filas = 30;
@@ -9,7 +9,7 @@ let posX = 9;
 let posY = 0;
 let posX2 = 9;
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
 canvas.style.width = totalWidth + "px";
 canvas.style.height = totalHeight + "px";
 generaColores();
@@ -27,8 +27,19 @@ function juego() {
 function comparaLinea() {
     const pixeles = ctx.getImageData(0, posY * size, canvas.width, size);
     const arrayAux = Array.from(pixeles.data);
-    if (!arrayAux.includes(0))
-        ctx.clearRect(0, posY * size, canvas.width, size);
+    if (!arrayAux.includes(0)) {
+        const promesa = new Promise((resolve) => {
+            setTimeout(() => {
+                ctx.clearRect(0, posY * size, canvas.width, size);
+                resolve();
+            }, 100);
+        });
+        const imageData = ctx.getImageData(0, 0, canvas.width, posY * size);
+        promesa.then(() => {
+            ctx.clearRect(0, 0, canvas.width, posY * size);
+            ctx.putImageData(imageData, 0, size);
+        });
+    }
 }
 function caePieza() {
     dibuja();
@@ -38,7 +49,7 @@ function caePieza() {
         setTimeout(() => {
             borraPieza();
             resolve();
-        }, 140);
+        }, 160);
     });
     promesa.then(() => caePieza());
 }
